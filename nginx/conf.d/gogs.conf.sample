@@ -1,0 +1,21 @@
+server {
+    listen 443;
+    server_name git.MYSITE;
+
+    ssl on;
+    ssl_certificate /etc/nginx/ssl/MYSITE/MYSITE.crt;
+    ssl_certificate_key /etc/nginx/ssl/MYSITE/MYSITE.key;
+
+    location / {
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass http://gogs:3000/;
+    }
+}
+
+server {
+    listen 80;
+    server_name git.MYSITE;
+    return 301 https://git.MYSITE:443$request_uri;
+}

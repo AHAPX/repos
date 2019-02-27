@@ -1,0 +1,52 @@
+APP_NAME = MYSITE repositories
+RUN_USER = git
+RUN_MODE = prod
+
+[database]
+DB_TYPE  = postgres
+HOST     = postgres:5432
+NAME     = gogs
+USER     = gogs
+PASSWD   = {{DB_PASSWD}}
+SSL_MODE = disable
+PATH     = data/gogs.db
+
+[repository]
+ROOT = /data/git/repos
+
+[server]
+DOMAIN       = git.MYSITE
+HTTP_PORT    = 3000
+ROOT_URL     = https://git.MYSITE/
+DISABLE_SSH  = false
+SSH_PORT     = 22
+OFFLINE_MODE = false
+
+[mailer]
+ENABLED = true
+HOST = mail.MYSITE:587
+FROM = git@MYSITE
+USER = git
+PASSWD = {{EMAIL_PASSWD}}
+
+[service]
+REGISTER_EMAIL_CONFIRM = false
+ENABLE_NOTIFY_MAIL     = false
+DISABLE_REGISTRATION   = true
+ENABLE_CAPTCHA         = false
+REQUIRE_SIGNIN_VIEW    = true
+
+[picture]
+DISABLE_GRAVATAR = false
+
+[session]
+PROVIDER = file
+
+[log]
+MODE      = file
+LEVEL     = Info
+ROOT_PATH = /data/gogs/log
+
+[security]
+INSTALL_LOCK = true
+SECRET_KEY   = {{SECRET_KEY}}

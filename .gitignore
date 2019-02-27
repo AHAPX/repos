@@ -1,0 +1,9 @@
+postgres/
+registry/
+nginx/conf.d/*.conf
+nginx/ssl/*
+gogs/git/
+gogs/ssh
+gogs/gogs/data
+gogs/gogs/log
+gogs/gogs/conf/app.ini

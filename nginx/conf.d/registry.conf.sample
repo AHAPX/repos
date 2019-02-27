@@ -1,0 +1,23 @@
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+    listen 443;
+
+    server_name docker.MYSITE;
+
+    ssl on;
+    ssl_certificate /etc/nginx/ssl/MYSITE/MYSITE.crt;
+    ssl_certificate_key /etc/nginx/ssl/MYSITE/MYSITE.key;
+
+    location / {
+        proxy_pass http://registry:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+    }
+
+    client_max_body_size 1g;
+}

@@ -1,0 +1,42 @@
+postgres:
+    image: postgres:9.5
+    environment:
+        - POSTGRES_PASSWORD=pViMazBU5ElmQa63
+    volumes:
+        - ./postgres/data:/var/lib/postgresql/data
+    restart: always
+
+gogs:
+    image: gogs/gogs
+    volumes:
+        - ./gogs:/data/
+    ports:
+        - "22:22"
+    links:
+        - postgres
+    restart: always
+
+registry:
+    image: registry:2
+    volumes:
+        - ./registry/data:/var/lib/registry/docker/registry/v2
+        - ./registry/auth:/auth
+    environment:
+        - REGISTRY_AUTH=htpasswd
+        - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+        - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+    restart: always
+
+nginx:
+    image: nginx:latest
+    ports:
+        - "80:80"
+        - "443:443"
+    volumes:
+        - ./nginx/conf.d:/etc/nginx/conf.d
+        - ./nginx/ssl:/etc/nginx/ssl
+    links:
+        - registry
+        - gogs
+    restart: always
+
